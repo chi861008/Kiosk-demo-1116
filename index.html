@@ -547,7 +547,6 @@ em.ex{font-style:normal;color:var(--mute);font-size:.86em;margin-left:4px}
 .tabbtn.on .dot.todo{color:var(--white)}
 .btn.primary.pending{background:#E4DFD8;color:#7A726B}
 html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
-.sec-h .req.free{background:var(--peach)!important;color:var(--accent)!important}
 .tile .rm,.ctile .rm,.hcard .rm{display:none!important}
 .citem .card.on{background:var(--dark)}
 .citem .card.on b,.citem .card.on .p,.citem .card.on .d,.citem .card.on .fl2{color:var(--white)}
@@ -559,6 +558,23 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .utab .cnt{font-size:22px;padding:4px 12px;border-radius:14px;margin-left:4px}
 .utab .cnt.todo{background:var(--peach);color:var(--accent);font-weight:700}
 .tabbtn .dot.todo{background:var(--peach);color:var(--accent)!important;padding:3px 9px;border-radius:12px;right:6px;top:6px}
+/* accent only for: unfinished required + "+" (add) + primary CTA; everything else greys */
+.step button{background:var(--dark)}
+.step button[data-a*="inc"]:not(:disabled){background:var(--accent)}
+.step button:disabled{background:var(--tile-2)!important}
+.line .step button[data-a^="ldec"]:not(:disabled){background:var(--dark)!important}
+.adj{background:var(--white)!important;border:2px solid var(--line)!important;color:var(--ink-2)!important;box-shadow:none!important}
+.adj:disabled{border-color:var(--tile-2)!important;color:#B3ABA3!important}
+.sec-h .req{background:var(--tile)!important;color:var(--ink-2)!important}
+.sec-h .req.todo{background:var(--peach)!important;color:var(--accent)!important}
+.sec-h .req.alert{background:#E53935!important;color:#fff!important}
+.sec-h .limit b{color:var(--ink-2)}
+.pd-top .price,.chip small,.tile .pr,.ctile .lb small,.mcard small,.hcard .p,.hcard small,.citem .card .p,.citem .card .fl2,.citem .card .d .fl,.urow .info .p,.urow .sel-t,.utab small,.hcard.on small{color:var(--ink-2)}
+.tile.on .pr,.ctile.on .lb small,.mcard.on small,.hcard.on .p,.hcard.on small,.citem .card.on .p,.citem .card.on .fl2,.chip.on small{color:var(--white)}
+.utab.on::after{background:var(--ink)}
+.tabbtn.on{background:var(--dark)!important;border-color:var(--dark)!important}
+.tabbtn .dot.ok{color:var(--ink-2)}
+.grand{background:var(--tile)!important;color:var(--ink)!important}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
