@@ -585,7 +585,8 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .mcard-w .step span,.chips.fm .step span{width:auto;flex:1;color:var(--ink)!important}
 
 /* count badges: neutral, not accent */
-.cat .n,.tile .badge{background:var(--ink)!important;color:var(--white)!important}
+.cat .n{background:var(--ink)!important;color:var(--white)!important}
+.tile .badge{background:var(--white)!important;color:var(--ink)!important}
 .cat.on .n{background:var(--white)!important;color:var(--ink)!important}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
@@ -829,7 +830,7 @@ function vMenu(){
   const t=totals(); const items=P.filter(p=>p.cat===S.cat);
   return `<div class="screen">${header()}
   <div class="promo"><span class="ic">${ICON.pct}</span><span class="tx">飲品買一送一</span><button class="all" data-a="promos">查看全部優惠</button></div>
-  <nav class="cats">${CATS.map(c=>{const n=catCount(c.id);return `<button class="cat ${c.id===S.cat?"on":""}" data-a="cat:${c.id}">${c.name}${n?`<span class="n">${n}</span>`:""}</button>`;}).join("")}</nav>
+  <nav class="cats">${CATS.map(c=>{return `<button class="cat ${c.id===S.cat?"on":""}" data-a="cat:${c.id}">${c.name}</button>`;}).join("")}</nav>
   <div class="grid scroll" data-scroll="menu-${S.cat}">${items.map(p=>{const n=countOf(p.id);return tile({a:"open:"+p.id,on:n>0,badge:n||"",name:p.name,price:money(p.price),label:p.name+" "+p.price+"元"});}).join("")}</div>
   <div class="bar">
     <button class="btn ghost l" data-a="back-welcome">返回</button>
