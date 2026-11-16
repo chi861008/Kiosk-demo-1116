@@ -1047,15 +1047,17 @@ const CASHOK_SVG=`<svg class="cashok" viewBox="0 0 240 200" aria-hidden="true" f
   <ellipse cx="96" cy="74" rx="20" ry="9" fill="var(--white)"/><path d="M76 74v10c0 5 9 9 20 9s20-4 20-9V74"/>
   <ellipse cx="136" cy="70" rx="20" ry="9" fill="var(--white)"/><path d="M116 70v10c0 5 9 9 20 9s20-4 20-9V70"/>
   <circle cx="186" cy="46" r="38" fill="currentColor" stroke="none"/><path d="M168 47l13 13 24-26" stroke="var(--white)" stroke-width="9"/></svg>`;
-function cashDone(hl,tip,lbl,amt){return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">${hl}</div><div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">${tip}</div>
-  ${SUCCESS_SVG}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">${lbl} ${money(amt)}</div></div>`;}
+function cashDone(hl,tip,lbl,amt,icon){return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">${hl}</div><div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">${tip}</div>
+  ${icon||SUCCESS_SVG}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">${lbl} ${money(amt)}</div></div>`;}
 function kioskCrop(target,anim){return `<div class="kcrop ${target} ${anim?"anim":""}"><div class="kin"><img src="${A("kiosk.png")}" alt="">${target==="coin"?`<svg class="coins" viewBox="0 0 160 50" aria-hidden="true">${[[20,34],[52,38],[84,33],[116,37],[68,24],[100,22],[36,22]].map(([x,y],i)=>`<g class="cn" style="animation-delay:${i*.18}s"><ellipse cx="${x}" cy="${y+3}" rx="15" ry="6" fill="#9a7a2c"/><ellipse cx="${x}" cy="${y}" rx="15" ry="6" fill="#e2c063" stroke="#a8862f" stroke-width="1.5"/></g>`).join("")}</svg>`:""}</div>${target==="rcpt"?`<svg class="rcpt" viewBox="0 0 80 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h80v112l-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8z" fill="#E4E4E4" stroke="#9A9A9A" stroke-width="2"/><rect x="12" y="12" width="56" height="6" fill="#555"/><rect x="12" y="26" width="40" height="4" fill="#999"/><rect x="12" y="36" width="50" height="4" fill="#999"/><rect x="12" y="46" width="34" height="4" fill="#999"/><rect x="12" y="62" width="56" height="4" fill="#999"/><path d="M12 80h2v22h-2zM17 80h4v22h-4zM24 80h2v22h-2zM29 80h5v22h-5zM37 80h2v22h-2zM42 80h3v22h-3zM48 80h2v22h-2zM53 80h5v22h-5zM61 80h2v22h-2zM66 80h2v22h-2z" fill="#222"/></svg>`:""}<i class="hl"></i></div>`;}
 function cashBusy(hl,tip,lbl,amt){return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">${hl}<span class="ld"><i></i><i></i><i></i></span></div><div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">${tip}</div>
   ${kioskCrop("coin")}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">${lbl} ${money(amt)}</div></div>`;}
 function vRefunding(){return cashBusy("退款中","請記得在下方找零口取回退款","應退金額",S.refund.amt);}
 function vChanging(){return cashBusy("找零中","請記得在下方找零口取回找零","應找金額",S.order.change);}
 function vRefund(){return cashDone("退款完成","請記得在下方找零口取回退款","應退金額",S.refund.amt);}
-function vChange(){return cashDone("找零完成","請記得在下方找零口取回找零","應找金額",S.order.change);}
+function vChange(){return cashDone("找零完成","請記得在下方找零口取回找零","應找金額",S.order.change,CASHOK_SVG);}
+function vCashPaid(){const o=S.order;return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">付款成功</div>${o.change>0?`<div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">即將為您找零</div>`:""}
+  ${SUCCESS_SVG}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">實收金額 ${money(S.paid)}</div></div>`;}
 function vCancelled(){
   return `<div class="screen"><div class="ono" style="top:300px">訂單編號 ${S.orderNo}</div><div class="cx-hl">交易已取消<br>歡迎您再度光臨</div>
     <div class="auto" style="top:1200px;font-size:30px">自動跳轉首頁　${S.timeLeft} 秒</div><div class="bar" style="border-top-color:transparent"><button class="btn ghost mid" data-a="reset">返回首頁</button></div></div>`;
@@ -1147,7 +1149,7 @@ const INPUT={
 let lastSheet=null,lastModal=null;
 function render(){
   const keep={}; $stage.querySelectorAll("[data-scroll]").forEach(el=>keep[el.dataset.scroll]=el.scrollTop);
-  const V={carrier:vCarrier,attract:vAttract,welcome:vWelcome,table:vTable,menu:vMenu,detail:vDetail,cart:vCart,invoice:vInvoice,payment:vPayment,process:vProcess,done:vDone,refund:vRefund,change:vChange,refunding:vRefunding,changing:vChanging,cancelled:vCancelled,pickup:vPickup}[S.screen];
+  const V={carrier:vCarrier,attract:vAttract,welcome:vWelcome,table:vTable,menu:vMenu,detail:vDetail,cart:vCart,invoice:vInvoice,payment:vPayment,process:vProcess,done:vDone,refund:vRefund,change:vChange,cashpaid:vCashPaid,refunding:vRefunding,changing:vChanging,cancelled:vCancelled,pickup:vPickup}[S.screen];
   $stage.innerHTML=V()+vSheet()+vModal();
   const still=[]; if(S.sheet&&S.sheet===lastSheet) still.push(".sheet",".scrim"); if(S.modal&&S.modal===lastModal) still.push(".modal:not(.shake)",".scrim");
   if(still.length) $stage.querySelectorAll(still.join(",")).forEach(e=>e.style.animation="none");
@@ -1168,7 +1170,9 @@ function resetAll(){stopTimer();clearTimeout(S.rt);Object.assign(S,{screen:"attr
 function finish(method){
   const t=totals(),names={cash:"現金支付",card:"信用卡支付",linepay:"LINE PAY 支付",mobile:"行動支付",easycard:"悠遊卡支付",counter:"臨櫃付款"};
   S.order={no:String(100+Math.floor(Math.random()*900)),method,methodName:names[method],total:t.total,count:t.count,change:method==="cash"?S.paid-t.total:0,invoice:invLabel(),slip:"LF"+String(Math.floor(Math.random()*100000)).padStart(5,"0")};
-  if(S.order.change>0){go("changing");clearTimeout(S.rt);S.rt=setTimeout(()=>{if(S.screen!=="changing")return;go("change");S.rt=setTimeout(()=>{if(S.screen==="change")startDone(method);},3000);},3500);return;}
+  if(method==="cash"){go("cashpaid");clearTimeout(S.rt);S.rt=setTimeout(()=>{if(S.screen!=="cashpaid")return;
+    if(!(S.order.change>0)){startDone(method);return;}
+    go("changing");S.rt=setTimeout(()=>{if(S.screen!=="changing")return;go("change");S.rt=setTimeout(()=>{if(S.screen==="change")startDone(method);},3000);},3500);},2500);return;}
   startDone(method);
 }
 function startDone(method){
