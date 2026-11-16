@@ -583,8 +583,6 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .mcard-w .mcard small{font-size:22px}
 .mcard-w .mcard.on b{color:var(--white)}
 .mcard-w .step,.chips.fm .fopt .step{width:100%;justify-content:space-between}
-.mcard-w .step button,.chips.fm .step button{width:60px;height:60px;border-radius:8px;background:var(--white)!important;border:2px solid var(--ink)!important;color:var(--ink)!important}
-.mcard-w .step button:disabled,.chips.fm .step button:disabled{border-color:var(--line)!important;color:var(--line)!important}
 .mcard-w .step span,.chips.fm .step span{width:auto;flex:1;color:var(--ink)!important}
 
 /* count badges: neutral, not accent */
@@ -613,6 +611,9 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .line .lp{width:110px}
 .trash{width:68px;height:68px;background:var(--white);border:2px solid var(--line);border-radius:6px}
 .trash svg{width:30px;height:32px}
+/* unified stepper: all solid dark, disabled light */
+.step button{background:var(--dark)!important;color:var(--white)!important;border:0!important}
+.step button:disabled{background:var(--tile-2)!important;color:var(--white)!important}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
