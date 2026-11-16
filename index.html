@@ -1170,7 +1170,7 @@ function finish(method){
   startDone(method);
 }
 function startDone(method){
-  S.timeLeft=method==="counter"?20:7; go("done");
+  S.timeLeft=method==="counter"?20:4; go("done");
   S.timer=setInterval(()=>{S.timeLeft--; const el=$stage.querySelector(".auto"); if(el) el.textContent="自動跳轉首頁　"+S.timeLeft+" 秒"; if(S.timeLeft<=0) resetAll();},1000);
 }
 function reqFlavor(groups){return groups.some(g=>g.required);}
