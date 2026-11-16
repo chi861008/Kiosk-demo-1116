@@ -556,6 +556,9 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .rmv{position:absolute;right:12px;top:12px;width:56px;height:56px;border-radius:6px;background:var(--dark);color:var(--white);display:grid;place-items:center;z-index:2}
 .rmv svg{width:32px;height:32px;stroke-width:3}
 .rmv:active{filter:brightness(.85)}
+.utab .cnt{font-size:22px;padding:4px 12px;border-radius:14px;margin-left:4px}
+.utab .cnt.todo{background:var(--peach);color:var(--accent);font-weight:700}
+.tabbtn .dot.todo{background:var(--peach);color:var(--accent)!important;padding:3px 9px;border-radius:12px;right:6px;top:6px}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
@@ -850,7 +853,7 @@ function vDetail(){
     if(compact){
       body=head+`<div class="ctiles">${t.items.map(it=>{const q=sel.filter(e=>e.iid===it.id).reduce((a,e)=>a+e.qty,0);
         return `<div class="ctile-w">${ctile({a:"cinc:"+it.id,on:q>0,name:it.name,price:it.price?"+"+it.price:""})}${stepper(q,"cdec:"+it.id,"cinc:"+it.id,{minDis:!q,maxDis:n>=t.max})}${q&&t.flavor.length?adjBtn("cflav:"+it.id):`<span class="adj ph"></span>`}</div>`;}).join("")}</div>`;
-      tabs=`<div class="utabs" role="tablist">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button role="tab" class="utab ${i===S.tab?"on":""}" data-a="tab:${i}">${i+1} ${tt.name}<span class="cnt ${k<tt.max?"todo":""}">${k}/${tt.max}</span></button>`;}).join("")}</div>`;
+      tabs=`<div class="utabs" role="tablist">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button role="tab" class="utab ${i===S.tab?"on":""}" data-a="tab:${i}">${tt.name}<span class="cnt ${k<tt.max?"todo":""}">${k}/${tt.max}</span></button>`;}).join("")}</div>`;
     } else {
       body=head+`<div class="citems">${t.items.map(it=>{const ents=sel.filter(e=>e.iid===it.id),e=ents[ents.length-1],q=ents.reduce((a,e)=>a+e.qty,0);
         return `<div class="citem"><div class="card ${q?"on":""}"><span class="ph"><img src="${pic(it.name)}" alt=""></span><b>${it.name}</b><span class="p">${it.price?"+ "+money(it.price):""}</span><span class="d">${it.desc}</span>${e&&t.flavor.length?`<span class="fl2">${ents.map(en=>t.flavor.map(g=>gText(g,en.flavor[g.id])).filter(Boolean).join("・")+(en.qty>1?" ×"+en.qty:"")).join(" / ")}</span>`:""}</div>
