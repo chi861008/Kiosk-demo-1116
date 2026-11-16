@@ -830,12 +830,12 @@ function vDetail(){
     if(compact){
       body=head+`<div class="ctiles">${t.items.map(it=>{const q=sel.filter(e=>e.iid===it.id).reduce((a,e)=>a+e.qty,0);
         return `<div class="ctile-w">${ctile({a:"cinc:"+it.id,on:q>0,name:it.name,price:it.price?"+"+it.price:""})}${stepper(q,"cdec:"+it.id,"cinc:"+it.id,{minDis:!q,maxDis:n>=t.max})}${q&&t.flavor.length?adjBtn("cflav:"+it.id):`<span class="adj ph"></span>`}</div>`;}).join("")}</div>`;
-      tabs=`<div class="utabs" role="tablist">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button role="tab" class="utab ${i===S.tab?"on":""}" data-a="tab:${i}">${i+1} ${tt.name}${k>=tt.max?`<span class="ok">${ICON.check}</span>`:`<span class="cnt">${k}/${tt.max}</span>`}</button>`;}).join("")}</div>`;
+      tabs=`<div class="utabs" role="tablist">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button role="tab" class="utab ${i===S.tab?"on":""}" data-a="tab:${i}">${i+1} ${tt.name}<span class="cnt">${k}/${tt.max}</span></button>`;}).join("")}</div>`;
     } else {
       body=head+`<div class="citems">${t.items.map(it=>{const ents=sel.filter(e=>e.iid===it.id),e=ents[ents.length-1],q=ents.reduce((a,e)=>a+e.qty,0);
         return `<div class="citem"><div class="card"><span class="ph"><img src="${pic(it.name)}" alt=""></span><b>${it.name}</b><span class="p">${it.price?"+ "+money(it.price):""}</span><span class="d">${it.desc}</span>${e&&t.flavor.length?`<span class="fl2">${ents.map(en=>t.flavor.map(g=>gText(g,en.flavor[g.id])).filter(Boolean).join("・")+(en.qty>1?" ×"+en.qty:"")).join(" / ")}</span>`:""}</div>
         <div class="row">${stepper(q,"cdec:"+it.id,"cinc:"+it.id,{minDis:q===0,maxDis:n>=t.max})}${q&&t.flavor.length?adjBtn("cflav:"+it.id):""}</div></div>`;}).join("")}</div>`;
-      tabs=`<div class="tabs">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button class="tabbtn ${i===S.tab?"on":""}" data-a="tab:${i}">${i+1} ${tt.name}${k>=tt.max?`<span class="dot ok">${ICON.check}</span>`:`<span class="dot">${k}/${tt.max}</span>`}</button>`;}).join("")}</div>`;
+      tabs=`<div class="tabs">${p.combo.map((tt,i)=>{const k=d.combo[tt.id].reduce((a,e)=>a+e.qty,0);return `<button class="tabbtn ${i===S.tab?"on":""}" data-a="tab:${i}">${i+1} ${tt.name}<span class="dot">${k}/${tt.max}</span></button>`;}).join("")}</div>`;
     }
   } else {
     body=p.groups.map(g=>groupBody(g,d)).join("");
