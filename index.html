@@ -636,6 +636,8 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .kcrop .coins{position:absolute;left:378px;top:218px;width:160px;height:50px}
 .kcrop .coins .cn{animation:cndrop .5s both ease-in, none}
 @keyframes cndrop{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:none}}
+html.kfull body{padding:0!important;background:#000}
+html.kfull #stage{box-shadow:none!important}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
@@ -1299,8 +1301,8 @@ $stage.addEventListener("click",e=>{
 
 /* ---------- scale to fit ---------- */
 const vp=document.getElementById("viewport");
-function fit(){const s=Math.min(vp.clientWidth/1080,vp.clientHeight/1920);$stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
-new ResizeObserver(fit).observe(vp); fit();
+function fit(){const W=innerWidth,H=innerHeight,full=!!(document.fullscreenElement||document.webkitFullscreenElement)||Math.abs(W/H-1080/1920)<0.04;document.documentElement.classList.toggle("kfull",full);const s=Math.min(vp.clientWidth/1080,vp.clientHeight/1920);$stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+new ResizeObserver(fit).observe(vp); addEventListener("resize",fit); document.addEventListener("fullscreenchange",fit); fit();
 render();
 /* portfolio deep links: the parent page posts {demoGo:key} to jump straight to a design highlight */
 (function(){
