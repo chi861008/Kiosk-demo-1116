@@ -631,6 +631,11 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .ld i{width:12px;height:12px;border-radius:50%;background:var(--tile-2);animation:ld 1.2s infinite}
 .ld i:nth-child(2){animation-delay:.2s}.ld i:nth-child(3){animation-delay:.4s}
 @keyframes ld{0%,60%,100%{background:var(--tile-2)}30%{background:var(--ink-2)}}
+.kcrop{overflow:visible!important}
+.kcrop .kin{position:absolute;inset:0;overflow:hidden;border-radius:8px}
+.kcrop .coins{position:absolute;left:378px;top:218px;width:160px;height:50px}
+.kcrop .coins .cn{animation:cndrop .5s both ease-in, none}
+@keyframes cndrop{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:none}}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
@@ -1042,7 +1047,7 @@ const CASHOK_SVG=`<svg class="cashok" viewBox="0 0 240 200" aria-hidden="true" f
   <circle cx="186" cy="46" r="38" fill="currentColor" stroke="none"/><path d="M168 47l13 13 24-26" stroke="var(--white)" stroke-width="9"/></svg>`;
 function cashDone(hl,tip,lbl,amt){return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">${hl}</div><div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">${tip}</div>
   ${SUCCESS_SVG}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">${lbl} ${money(amt)}</div></div>`;}
-function kioskCrop(target,anim){return `<div class="kcrop ${target} ${anim?"anim":""}"><img src="${A("kiosk.png")}" alt="">${target==="rcpt"?`<svg class="rcpt" viewBox="0 0 80 120" aria-hidden="true"><path d="M0 0h80v112l-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8z" fill="#fff" stroke="#bbb" stroke-width="2"/><rect x="12" y="12" width="56" height="6" fill="#555"/><rect x="12" y="26" width="40" height="4" fill="#999"/><rect x="12" y="36" width="50" height="4" fill="#999"/><rect x="12" y="46" width="34" height="4" fill="#999"/><rect x="12" y="62" width="56" height="4" fill="#999"/><path d="M12 80h2v22h-2zM17 80h4v22h-4zM24 80h2v22h-2zM29 80h5v22h-5zM37 80h2v22h-2zM42 80h3v22h-3zM48 80h2v22h-2zM53 80h5v22h-5zM61 80h2v22h-2zM66 80h2v22h-2z" fill="#222"/></svg>`:""}<i class="hl"></i></div>`;}
+function kioskCrop(target,anim){return `<div class="kcrop ${target} ${anim?"anim":""}"><div class="kin"><img src="${A("kiosk.png")}" alt="">${target==="coin"?`<svg class="coins" viewBox="0 0 160 50" aria-hidden="true">${[[20,34],[52,38],[84,33],[116,37],[68,24],[100,22],[36,22]].map(([x,y],i)=>`<g class="cn" style="animation-delay:${i*.18}s"><ellipse cx="${x}" cy="${y+3}" rx="15" ry="6" fill="#9a7a2c"/><ellipse cx="${x}" cy="${y}" rx="15" ry="6" fill="#e2c063" stroke="#a8862f" stroke-width="1.5"/></g>`).join("")}</svg>`:""}</div>${target==="rcpt"?`<svg class="rcpt" viewBox="0 0 80 120" aria-hidden="true"><path d="M0 0h80v112l-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8z" fill="#fff" stroke="#bbb" stroke-width="2"/><rect x="12" y="12" width="56" height="6" fill="#555"/><rect x="12" y="26" width="40" height="4" fill="#999"/><rect x="12" y="36" width="50" height="4" fill="#999"/><rect x="12" y="46" width="34" height="4" fill="#999"/><rect x="12" y="62" width="56" height="4" fill="#999"/><path d="M12 80h2v22h-2zM17 80h4v22h-4zM24 80h2v22h-2zM29 80h5v22h-5zM37 80h2v22h-2zM42 80h3v22h-3zM48 80h2v22h-2zM53 80h5v22h-5zM61 80h2v22h-2zM66 80h2v22h-2z" fill="#222"/></svg>`:""}<i class="hl"></i></div>`;}
 function cashBusy(hl,tip,lbl,amt){return `<div class="screen"><div class="d-sub" style="top:330px">現金支付</div><div class="d-hl" style="top:430px;font-size:44px">${hl}<span class="ld"><i></i><i></i><i></i></span></div><div class="d-sub" style="top:510px;font-size:36px;color:var(--ink)">${tip}</div>
   ${kioskCrop("coin")}<div class="p-amt" style="top:1300px;font-size:40px;font-weight:700">${lbl} ${money(amt)}</div></div>`;}
 function vRefunding(){return cashBusy("退款中","請記得在下方找零口取回退款","應退金額",S.refund.amt);}
