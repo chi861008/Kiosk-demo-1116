@@ -636,7 +636,8 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .kcrop .coins{position:absolute;left:378px;top:218px;width:160px;height:50px}
 .kcrop .coins .cn{animation:cndrop .5s both ease-in, none}
 @keyframes cndrop{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:none}}
-html.kfull body{padding:0!important;background:#000}
+html.kfull body{padding:0!important}
+html.kfull:not(.embed) body{background:#000}
 html.kfull #stage{box-shadow:none!important}
 /* EasyCard: reader is the logo panel on the right */
 .scene.tap.ec .kw{animation-name:camec}
