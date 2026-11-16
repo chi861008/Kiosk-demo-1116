@@ -553,6 +553,9 @@ html.wf .btn.primary.pending{background:#E2E2E2;color:#6E6E6E}
 .citem .card.on b,.citem .card.on .p,.citem .card.on .d,.citem .card.on .fl2{color:var(--white)}
 .citem .card.on .d{opacity:.8}
 .tabbtn .dot.todo::before,.utab .cnt.todo::before{display:none!important}
+.rmv{position:absolute;right:8px;top:8px;width:60px;height:60px;border-radius:8px;background:var(--white);color:var(--dark);display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.25);z-index:2}
+.rmv svg{width:30px;height:30px}
+.rmv:active{background:var(--tile)}
 /* ===== wireframe (grayscale) theme ===== */
 html.wf{--bg:#F7F7F7;--tile:#ECECEC;--tile-2:#D4D4D4;--ink:#222;--ink-2:#3A3A3A;--mute:#8C8C8C;--dark:#5A5A5A;--line:#9E9E9E;--row:#E2E2E2;
   --accent:#4A4A4A;--accent-soft:#BDBDBD;--peach:#E3E3E3;--peach-line:#CFCFCF;--green:#555;--green-line:#CCC;--green-soft:#E0E0E0;--green-ink:#444;--edit:#555;
@@ -760,7 +763,7 @@ function stepper(val,dec,inc,opts){
 function tile(o){
   const tg=o.a?"button":"div";
   return `<${tg} class="tile ${o.on?"on":""}" ${o.a?`data-a="${o.a}"`:""} ${o.label?`aria-label="${esc(o.label)}"`:""}>
-    <span class="ph"><img src="${pic(o.name)}" alt=""></span>${o.badge?`<span class="badge">${o.badge}</span>`:""}${o.rm?`<span class="rm" aria-hidden="true">${ICON.check}</span>`:""}
+    <span class="ph"><img src="${pic(o.name)}" alt=""></span>${o.badge?`<span class="badge">${o.badge}</span>`:""}${o.rm?`<span class="rm" aria-hidden="true">${ICON.check}</span>`:""}${o.rmv&&o.on?`<span class="rmv" role="button" aria-label="取消選取" data-a="${o.a}">${ICON.minus}</span>`:""}
     <span class="nm">${esc(o.name)}</span><span class="pr">${o.price}</span></${tg}>`;
 }
 function opt(x,y,a,icon,label,cls){return `<button class="opt ${cls||""}" style="left:${x}px;top:${y}px" data-a="${a}"><span class="icw">${icon}</span><span class="lb">${label}</span></button>`;}
@@ -805,7 +808,7 @@ function vMenu(){
 function reqBadge(done,alert){return `<span class="req ${alert?"alert":""} ${done||alert?"":"todo"}">${alert?ICON.bang:done?ICON.check:""}必選</span>`;}
 function adjBtn(a,dis){return `<button class="adj" data-a="${a}" ${dis?"disabled":""}>調整口味</button>`;}
 function ctile(o){
-  return `<button class="ctile ${o.on?"on":""}" data-a="${o.a}" aria-label="${esc(o.name)}"><img src="${pic(o.name)}" alt="">${o.on?`<span class="rm" aria-hidden="true">${ICON.check}</span>`:""}
+  return `<button class="ctile ${o.on?"on":""}" data-a="${o.a}" aria-label="${esc(o.name)}"><img src="${pic(o.name)}" alt="">${o.on?`<span class="rm" aria-hidden="true">${ICON.check}</span>`:""}${o.rmv&&o.on?`<span class="rmv" role="button" aria-label="取消選取" data-a="${o.a}">${ICON.minus}</span>`:""}
     <span class="lb">${esc(o.name)}${o.price?`<small>${o.price}</small>`:""}</span></button>`;
 }
 function upgradeBody(p,d){
@@ -820,9 +823,9 @@ function upgradeBody(p,d){
       <span class="tx"><b>${o.name}</b><span class="p">${px(o)}</span><small>${on?o.parts.map(k=>optName(PARTS[k],d.upg.parts[k])).join("、"):"點選後可選擇口味"}</small></span></button>
       <div class="hc-ctl">${stepper(on?1:0,"upgdec:"+o.id,"upginc:"+o.id,{minDis:!on,maxDis:on})}${adjBtn("upgflav",!on)}</div></div>`;}).join("")}</div></section>`;
   if(ui==="compact") return `<section>${head}<div class="ctiles">${UPGRADE.options.map(o=>{const on=d.upg&&d.upg.id===o.id;
-    return `<div class="ctile-w">${ctile({a:"upg:"+o.id,on,name:o.name,price:px(o)})}${on?adjBtn("upgflav"):`<span class="adj ph"></span>`}</div>`;}).join("")}</div></section>`;
+    return `<div class="ctile-w">${ctile({a:"upg:"+o.id,on,rmv:true,name:o.name,price:px(o)})}${on?adjBtn("upgflav"):`<span class="adj ph"></span>`}</div>`;}).join("")}</div></section>`;
   return `<section>${head}<div class="otiles">${UPGRADE.options.map(o=>{const on=d.upg&&d.upg.id===o.id;
-    return `<div class="otile">${tile({a:"upg:"+o.id,on,rm:on,name:o.name,price:px(o)})}${on?adjBtn("upgflav"):`<span class="adj ph"></span>`}</div>`;}).join("")}</div></section>`;
+    return `<div class="otile">${tile({a:"upg:"+o.id,on,rm:on,rmv:true,name:o.name,price:px(o)})}${on?adjBtn("upgflav"):`<span class="adj ph"></span>`}</div>`;}).join("")}</div></section>`;
 }
 function groupBody(g,d){
   if(g.ui==="tabs") return `<section><div class="utabs" role="tablist">${g.options.map(o=>`<button role="tab" class="utab ${d.sel[g.id]===o.id?"on":""}" data-a="sel:${g.id}:${o.id}">${o.name}${o.price?`<small>+${o.price}</small>`:""}</button>`).join("")}</div></section>`;
@@ -831,7 +834,7 @@ function groupBody(g,d){
     <div class="mcards">${g.options.map(o=>{const q=m[o.id]||0;return `<div class="mcard ${q?"on":""}"><b>${o.name}</b><small>+${o.price}</small>${stepper(q,"mdec:"+g.id+":"+o.id,"minc:"+g.id+":"+o.id,{minDis:!q,maxDis:n>=g.max})}</div>`;}).join("")}</div></section>`;}
   if(g.pick){const v=d.sel[g.id];
     const head=`<div class="sec-h">${g.name}<span class="req free">選填</span><span class="limit"><b>${v.length}</b>最多${g.max}項</span></div>`;
-    if(g.tiles) return `<section>${head}<div class="otiles">${g.options.map(o=>{const on=v.includes(o.id);return `<div class="otile">${tile({a:"pick:"+g.id+":"+o.id,on,rm:on,name:o.name,price:o.price?"+ "+o.price:""})}</div>`;}).join("")}</div></section>`;
+    if(g.tiles) return `<section>${head}<div class="otiles">${g.options.map(o=>{const on=v.includes(o.id);return `<div class="otile">${tile({a:"pick:"+g.id+":"+o.id,on,rm:on,rmv:true,name:o.name,price:o.price?"+ "+o.price:""})}</div>`;}).join("")}</div></section>`;
     return `<section>${head}<div class="chips">${g.options.map(o=>`<button class="chip ${v.includes(o.id)?"on":""}" data-a="pick:${g.id}:${o.id}">${o.name}${o.price?`<small>+ ${o.price}</small>`:""}</button>`).join("")}</div></section>`;}
   return `<section><div class="sec-h">${g.name}${g.required?reqBadge(d.sel[g.id]!=null):g.optional?`<span class="req free">選填</span>`:""}</div>
     <div class="chips" style="grid-template-columns:repeat(${Math.max(3,g.options.length)},1fr)">${g.options.map(o=>`<button class="chip ${d.sel[g.id]===o.id?"on":""}" data-a="sel:${g.id}:${o.id}">${o.name}${o.price?`<small>+ ${o.price}</small>`:""}</button>`).join("")}</div></section>`;
