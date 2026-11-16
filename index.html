@@ -897,7 +897,7 @@ function vDetail(){
     <div class="pd-top ${p.combo?"combo":""}"><span class="ph"><img src="${pic(p.name)}" alt=""></span><h2>${p.name}</h2><div class="price">${money(p.price)}</div><p class="desc">${p.desc}</p><button class="x" data-a="close-detail" aria-label="關閉">${ICON.close}</button>${tabs}</div>
     <div class="pd-body scroll ${p.combo?"combo":""} ${promo?"promo-on":""}" data-scroll="pd">${body}</div>
     ${promo?`<div class="pd-promo"><span class="ic">${ICON.pct}</span><span class="tx">飲品買一送一</span><button class="all" data-a="promos">查看全部優惠</button></div>`:""}
-    <div class="bar pd-bar">${stepper(d.qty,"qdec","qinc",{minDis:d.qty<=1})}${(()=>{const left=p.combo?p.combo.reduce((a,t)=>a+Math.max(0,t.max-d.combo[t.id].reduce((x,e)=>x+e.qty,0)),0):0;return left?`<button class="btn primary r pending" data-a="confirm-detail">還需選擇 ${left} 項<span class="amt">${money(u*d.qty)}</span></button>`:`<button class="btn primary r" data-a="confirm-detail">${S.editing!=null?"更新餐點":"加入購物車"}<span class="amt">${money(u*d.qty)}</span></button>`;})()}</div>
+    <div class="bar pd-bar">${stepper(d.qty,"qdec","qinc",{minDis:d.qty<=1})}<button class="btn primary r" data-a="confirm-detail">${S.editing!=null?"更新餐點":"加入購物車"}<span class="amt">${money(u*d.qty)}</span></button></div>
   </div>`;
 }
 function vCart(){
