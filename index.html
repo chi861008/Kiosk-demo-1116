@@ -1082,7 +1082,7 @@ function vSheet(){
     const any=Object.values(sh.q).some(v=>v>0);
     return `<div class="scrim"></div><div class="sheet"><div class="sh-title">加點商品</div>
       <div class="sh-body up scroll" data-scroll="upsell"><p class="up-tip">點一下加 1 份，如需刪減請於購物車內調整</p><div class="up-grid">${UPSELL.map(id=>{const p=PBY[id],q=sh.q[id]||0;
-        return `<button class="ctile ${q?"on":""}" data-a="uinc:${id}" aria-label="${esc(p.name)}"><img src="${pic(p.name)}" alt="">${q?`<span class="cnt">${q}</span>`:""}<span class="lb">${esc(p.name)}<small>${money(p.price)}</small></span></button>`;}).join("")}</div></div>
+        return tile({a:"uinc:"+id,on:q>0,badge:q||"",name:p.name,price:money(p.price),label:p.name+" "+p.price+"元"});}).join("")}</div></div>
       <div class="bar"><button class="btn ghost l" data-a="upsell-skip">不需要，謝謝</button><button class="btn primary r" data-a="upsell-add" ${any?"":"disabled"}>加入購物車</button></div></div>`;
   }
   if(sh.kind==="flavor"){
